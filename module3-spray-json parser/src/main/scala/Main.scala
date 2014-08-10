@@ -33,47 +33,6 @@ import MyJsonProtocol._
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-   /*
-
-    val source = """{ "operation": "www", "ni": "fff"}"""
-    val jsonAst = source.parseJson
-
- case class Person(
-      operation: String,
-      ni:String
-      );
-  implicit val formats = jsonFormat4(Person)
-    //val json = jsonAst.prettyPrint
-
-    //val json1 = Color("CadetBlue", 95, 158, 160).toJson
-    //val color = json1.convertTo[Color]
-    
-   val myObject = jsonAst.convertTo[Person]
-
-    //val ()
-    println(myObject.operation)
-   
-
-    //val person = source.asJson.convertTo[Person]
-    //println(person)
-
-   // println(jsonAst);
-   */
-
-
-
   }
 
 }
