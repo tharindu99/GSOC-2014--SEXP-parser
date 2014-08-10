@@ -1,4 +1,4 @@
-package tutorial
+package spray_webServices_module
 
 import akka.actor.{ ActorRef, Props, Actor, ActorSystem }
 import akka.routing.FromConfig
@@ -13,7 +13,7 @@ object Main {
     val port = 8999 //config.getInt("geotrellis.port")
     val host = "localhost" //config.getString("geotrellis.hostname")
 
-    // we need an ActorSystem to host our service
+    // need an ActorSystem to host our service
     implicit val system = ActorSystem()
 
     //create our service actor
