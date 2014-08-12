@@ -15,53 +15,75 @@ import geotrellis.statistics.Histogram
 
 class GeoTrellisServiceActor extends GeoTrellisService with Actor {
 
-  // the HttpService trait defines only one abstract member, which
-  // connects the services environment to the enclosing actor or test
+  /* the HttpService trait defines only one abstract member, which
+  * connects the services environment to the enclosing actor or test
+  */
+  
   def actorRefFactory = context
 
   def receive = runRoute(rootRoute)
-}
 
+}
 
 trait GeoTrellisService extends HttpService {
 
   implicit def myExceptionHandler(implicit log: LoggingContext) =
+  /* Exeption handling 
+   * by printing the error message
+  */
+  
     ExceptionHandler {
       case e: Exception =>
         requestUri { uri =>
           complete(InternalServerError, s"Exception: ${e.getMessage}" )
-        }
     }
+    
+}
+
+/* raster data processing into suitable format to before going to 
+ * operations 
+*/
 
   def rasterAsPng(name: String) = {
     val raster = RasterSource(name)
-
     raster.renderPng(ColorRamps.BlueToRed).run match {
       case Complete(img, hist) => img
       case Error(msg, trace) => throw new RuntimeException(msg)
     }
   }
 
+/*get root services by parsing throw address bar
+ * using basic string maching to get the perticular services
+*/
+
   val rootRoute = {
+
     path("check") {
       get { complete("Works..") }
     } ~
+
     path("operation1") {
         get{
             respondWithMediaType(MediaTypes.`image/png`) {
               complete{
+                //initialise the raster data into variables 
                 val r1: RasterSource = RasterSource("SBN_farm_mkt")
                 val r2: RasterSource = RasterSource("SBN_farm_mkt")
+                
+                //doing the operations and assign to variable
                 val added  = (r1*5) + (r2*2)
                 val weightedOverlay = added / (5+2)
-                //val rendered = weightedOverlay.renderPng(ColorRamps.BlueToRed).get
-
+                
+                //render the raster to png format and represent throw.
                 weightedOverlay.renderPng(ColorRamps.BlueToRed).get
               }
             }
         }
       } ~
+      
+      //access set of string segment parsing throw the address bar..
     pathPrefix("raster" / Segment) { slug =>
+      
       //Construct an object with instructions to fetch the raster
       val raster: RasterSource = RasterSource(slug)
       val r1: RasterSource = RasterSource("SBN_farm_mkt")
@@ -79,12 +101,12 @@ trait GeoTrellisService extends HttpService {
           }
         }
       } ~
+      
       path("check_operation") {
         get {
           respondWithMediaType(MediaTypes.`application/json`) {
             complete {
               val histogramSource: ValueSource[Histogram] = raster.histogram()
-              //No processing has been done yet
               val histogram = histogramSource.get
               val stats = histogram.generateStatistics()
               s"{mean: ${stats.mean}, histogram: ${histogram.toJSON} }"
@@ -92,6 +114,7 @@ trait GeoTrellisService extends HttpService {
           }
         }
       }
+      
     } 
 
   }
