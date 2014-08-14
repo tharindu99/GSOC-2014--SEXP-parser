@@ -1,3 +1,8 @@
+/*written by Tharindu Madushanka for Gsoc 2014,
+* eclipse foundation project SEXP parser for 
+*geotrilis*/
+
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,31 +16,34 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+//import required libraries 
 
 public class Main {
+	// setup global variables..
 	
 	private static Integer keyContinue = 0;
 	private static Integer k=3;//sigling level..
 	private static double jc_threshold=0.75;
-	private static HashMap<Integer, String> store = new HashMap<Integer,String>();
 	private static Integer count_sentense =0;
+
+	//setup tempory mememory stores globally ..
+
+	private static HashMap<Integer, String> store = new HashMap<Integer,String>();
 	private static ArrayList<ArrayList<Integer>> sigled_sentenses = new ArrayList<ArrayList<Integer>>();
 	private static ArrayList<String> coupled_sentenses1 = new ArrayList<String>();
 	private static ArrayList<String> coupled_sentenses2 = new ArrayList<String>();
 	private static ArrayList<String> coupled_sentenses3 = new ArrayList<String>();
 	
+	// starting main method here
 	
 	public static void main(String[] args) {
+		
 		long startTime = System.nanoTime();
 		file_read();
-		//System.out.println(store);
+		
 		minhah_table(1);
 		minhah_table(2);
 		minhah_table(3);
-		//System.out.println("sigled sentenses :"+sigled_sentenses);
-		//System.out.println("coupled sentenses1:"+coupled_sentenses1);
-		//System.out.println("coupled sentenses2:"+coupled_sentenses2);
-		//System.out.println("coupled sentenses3:"+coupled_sentenses3);
 		intersection();
 		union();
 		long endTime = System.nanoTime();
