@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+
+		<script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript"src="data_array_qr.js"></script>
+        <script type="text/javascript"src="data_array_lu.js"></script>
+		<script type="text/javascript">
+$(function () {
+    var chart;
+    $(document).ready(function() {
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',
+                type: 'line'
+            },
+            title: {
+                text: 'Runing time Analysis of SEXP evaluation with java and scala'
+            },
+            subtitle: {
+                text: 'design by tharindu madushanka'
+            },
+            xAxis: {
+                /*categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']*/
+            },
+            yAxis: {
+                title: {
+                    text: 'Running Time (ns)'
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +'ns';
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: true
+                }
+            },
+            series: [{
+                name: 'Java',
+                data: data1
+            }, {
+                name: 'Scala',
+                data: data2
+            }]
+        });
+    });
+    
+});
+		</script>
+	</head>
+	<body>
+<script src="highcharts.js"></script>
+<script src="exporting.js"></script>
+
+<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+	</body>
+</html>
